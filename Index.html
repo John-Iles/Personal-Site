@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>John's Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Thasadith:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+
+body {
+background-color: black;
+color: white;
+font-family: 'Thasadith', sans-serif;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+margin: 0;
+overflow-y: auto; /* Allow vertical scrolling */
+display: block; /* Important: Change to block for correct layout */
+    overflow-x: hidden; /* Prevent horizontal scrollbar */
+}
+
+#hero { /* Container for the hero section */
+    display: flex;
+    flex-direction: column; /* Align items vertically */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure full viewport height */
+    text-align: center; /* Center the text */
+}
+
+h1 {
+font-size: 2em;
+display: inline-flex;
+align-items: center;
+}
+
+#rotating-text {
+display: inline-block;
+animation: wipeUp 3s infinite;
+width: 250px;
+text-align: center;
+vertical-align: bottom;
+overflow: hidden;
+white-space: nowrap;
+text-decoration: underline;
+}
+
+@keyframes wipeUp {
+0% {
+  transform: translateY(0);
+  opacity: 1;
+}
+30% {
+  transform: translateY(0);
+  opacity: 1;
+}
+100% {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+}
+
+nav {
+display: flex;           /* Enable flexbox */
+justify-content: center; /* Center horizontally */
+padding: 20px 0;
+position: fixed;       /* Keep fixed positioning */
+top: 0;
+width: 100%;
+z-index: 100;
+background-color: rgba(0, 0, 0, 0.7); 
+}
+
+nav a {
+color: white; /* Restored text color */
+text-decoration: none; /* Restored - removes default underline */
+margin: 0 15px;
+position: relative;
+display: inline-flex; /* For vertical alignment */
+align-items: center;  /* Vertically center text */
+font-family: 'Thasadith', sans-serif;
+font-size: 1.25em;}
+
+nav a::after {
+content: "";
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 0;
+height: 2px;
+background-color: white;
+transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+width: 100%;
+}
+
+
+#about-me {  /* Correct CSS for #about-me */
+
+background-color: black; /* Or a different background color */
+color: white;
+padding: 50px;
+padding-top: 100px
+text-align: left; /* Align text to the left */
+line-height: 1.6;   /* Improve readability */
+max-width: 800px;  /* Limit width for better readability on larger screens */
+margin: 0 auto;    /* Center the section on the page */
+font-size: 1.25em;
+
+display: block; /* Changed to block for proper layout */
+align-items: flex-start; /* Align items to the start (left) */
+padding: 50px;
+; /* Add some top padding for spacing */
+}
+
+#about-me p { /* Style the paragraphs in About Me */
+line-height: 1.6; /* Adjust for better readability */
+}
+
+  #down-arrow {
+position: fixed; /* Fixed positioning to stay at the bottom */
+bottom: 20px;   /* Adjust distance from bottom as needed */
+left: 50%;
+transform: translateX(-50%);
+font-size: 4em;      /* Increased font size */
+cursor: pointer;
+animation: bounce 1.5s infinite ease-in-out; /* Smoother bounce */
+}
+
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-15px); } /* Increased bounce height */
+}
+</style>
+</head>
+<body>
+
+<nav>
+        <a href="#about">About Me</a>
+        <a href="#case-studies">Case Studies</a>
+        <a href="#contact">Contact</a>
+</nav>
+
+<div id="hero">  <!-- Hero div starts here -->
+    <h1>Hi, I'm John. Your friendly <span id="rotating-text"></span> expert.</h1>
+    <div id="down-arrow">&#x2304;</div>
+  </div> <!-- Hero div ends here -->
+  
+
+<div id="about-me">
+    <h2>About Me</h2>
+    <p>Hi there, I'm John. I am currently working in the Commerce Consulting space for an agency called Wunderman Thompson, who are part of the WPP network. I specialise in D2C Strategy & Online Trading, having built Experiences across numerous Beauty brands, spanning multiple geographies.</p>
+    <p>With a strong background in commerce strategy, data analysis, and digital marketing, I can bring a holistic approach to enhancing your online presence and driving sustainable growth.</p>
+    <p>Please, don't be a stranger - get in touch if you'd like to talk all things digital strategy with me!</p>
+  </div>
+
+<script>
+    const expertise = ["Product strategy", "D2C Strategy", "Digital trading", "Agile delivery"];
+    let currentExpertiseIndex = 0;
+    const rotatingTextElement = document.getElementById("rotating-text");
+    
+    function rotateText() {
+      rotatingTextElement.textContent = expertise[currentExpertiseIndex];
+      currentExpertiseIndex = (currentExpertiseIndex + 1) % expertise.length;
+    }
+    
+    const animationDuration = 3000; // 3 seconds
+    setInterval(rotateText, animationDuration);
+    rotateText(); // Initial display
+    
+    // Update CSS animation duration dynamically
+    const styleSheet = document.styleSheets[0];
+    const wipeUpRule = Array.from(styleSheet.cssRules).find(rule => rule.name === "wipeUp");
+    if (wipeUpRule) {
+      wipeUpRule.style.animationDuration = `${animationDuration}ms`;
+    }
+    
+    const downArrow = document.getElementById("down-arrow");
+    const aboutMeSection = document.getElementById("about-me");
+    
+    // Calculate the position of the about-me section (adjust offset if needed)
+    const aboutMeOffsetTop = aboutMeSection.offsetTop;
+    
+    downArrow.addEventListener("click", () => {
+      window.scrollTo({
+        top: aboutMeOffsetTop - 80, // Adjust the offset as needed
+        behavior: "smooth"
+      });
+    });
+    
+    // Smooth scrolling on wheel events (optional: add custom logic here)
+    window.addEventListener('wheel', (event) => {
+      // Example: Prevent scrolling past the about-me section when scrolling down
+      if (event.deltaY > 0 && window.scrollY < aboutMeOffsetTop - 80) {
+          // event.preventDefault(); // Prevent default scrolling behavior
+          window.scrollTo({
+              top: aboutMeOffsetTop - 80,
+              behavior: "smooth"
+          });
+      }
+    
+    });
+    </script>
+
+</body>
+</html>
