@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — John Iles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0e0e;
+    --paper: #f5f2ec;
+    --accent: #c8553d;
+    --muted: #7a7060;
+    --rule: #d4cfc6;
+    --card: #ede9e1;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.5;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    padding: 48px 60px 40px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .site-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .site-name em { font-style: italic; color: var(--accent); }
+
+  .header-links { display: flex; gap: 32px; align-items: center; }
+  .header-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .header-links a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .header-links a.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 60px;
+    display: flex;
+    backdrop-filter: blur(8px);
+  }
+  nav a {
+    display: block;
+    padding: 16px 20px 14px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  nav a:hover, nav a.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+  /* ─── HERO ─── */
+  .page-hero {
+    padding: 80px 60px 60px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero::after {
+    content: 'Ideas';
+    position: absolute;
+    right: -10px;
+    bottom: -20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 180px;
+    font-weight: 300;
+    color: var(--card);
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: -6px;
+  }
+
+  .page-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.05s forwards;
+  }
+
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .page-title em { font-style: italic; color: var(--accent); }
+
+  /* ─── LAYOUT ─── */
+  .writing-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    min-height: 80vh;
+  }
+
+  /* ─── FEATURED ARTICLE ─── */
+  .featured-article {
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .article-meta {
+    padding: 40px 60px 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .article-tag {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: #fff;
+    padding: 3px 10px;
+  }
+
+  .article-date {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .article-read-time {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .article-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    padding: 28px 60px 0;
+    max-width: 680px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.15s forwards;
+  }
+  .article-title em { font-style: italic; color: var(--accent); }
+
+  .article-dek {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--muted);
+    padding: 20px 60px 40px;
+    max-width: 660px;
+    border-bottom: 1px solid var(--rule);
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.25s forwards;
+  }
+
+  /* Article body */
+  .article-body {
+    padding: 48px 60px 60px;
+    max-width: 680px;
+  }
+
+  .article-body h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+    margin: 40px 0 16px;
+    line-height: 1.15;
+  }
+
+  .article-body h2:first-child { margin-top: 0; }
+
+  .article-body p {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #2a2620;
+    margin-bottom: 20px;
+  }
+
+  .article-body p:last-child { margin-bottom: 0; }
+
+  .article-body strong {
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  .article-body em {
+    font-style: italic;
+  }
+
+  .pull-quote {
+    border-left: 3px solid var(--accent);
+    padding: 20px 28px;
+    margin: 32px 0;
+    background: var(--card);
+  }
+
+  .pull-quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px !important;
+    font-weight: 300;
+    line-height: 1.5 !important;
+    color: var(--ink) !important;
+    margin-bottom: 0 !important;
+    font-style: italic;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .writing-side {
+    padding: 40px 36px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .side-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+
+  /* Future articles (stubs) */
+  .stub-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .stub {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--rule);
+    opacity: 0.5;
+  }
+  .stub:last-child { border-bottom: none; }
+
+  .stub-tag {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .stub-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+
+  .stub-note {
+    font-size: 10px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .about-blurb {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .about-blurb p {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .about-blurb a {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 1px;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 32px 60px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  footer span { color: var(--accent); }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 900px) {
+    header { padding: 32px; flex-direction: column; align-items: flex-start; gap: 20px; }
+    nav { padding: 0 32px; overflow-x: auto; }
+    .page-hero { padding: 48px 32px 40px; }
+    .page-hero::after { display: none; }
+    .writing-layout { grid-template-columns: 1fr; }
+    .featured-article { border-right: none; }
+    .article-meta, .article-title, .article-dek { padding-left: 32px; padding-right: 32px; }
+    .article-body { padding: 40px 32px; }
+    .writing-side { padding: 36px 32px; }
+    footer { padding: 24px 32px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="site-name" href="index.html">John <em>Iles</em></a>
+  <div class="header-links">
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="thinking.html" class="active">Writing</a>
+    <a href="mailto:john@example.com">Get in touch</a>
+  </div>
+</header>
+
+<nav>
+  <a href="index.html">CV</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="thinking.html" class="active">Writing</a>
+</nav>
+
+<div class="page-hero">
+  <p class="page-eyebrow">Thinking out loud</p>
+  <h1 class="page-title">Commerce, AI,<br>and what comes <em>next</em>.</h1>
+</div>
+
+<div class="writing-layout">
+
+  <!-- ── MAIN ARTICLE ── -->
+  <article class="featured-article">
+    <div class="article-meta">
+      <span class="article-tag">Agentic Commerce</span>
+      <span class="article-date">February 2026</span>
+      <span class="article-read-time">6 min read</span>
+    </div>
+
+    <h1 class="article-title">The website is not the destination.<br><em>It never was.</em></h1>
+
+    <p class="article-dek">AI agents are beginning to make purchasing decisions on behalf of consumers. If that becomes the norm, the ecommerce website as we know it may become a back-end system — not a front door. Are brands ready for that?</p>
+
+    <div class="article-body">
+
+      <p>For the last twenty years, the ecommerce website has been the centre of gravity for digital commerce. Brands have poured enormous resources into it — platform migrations, personalisation engines, conversion rate optimisation, UX research, A/B testing. The website was the place where the relationship between brand and consumer was made or broken. Traffic in, revenue out.</p>
+
+      <p>I think that's about to change in a fairly fundamental way, and most of the industry hasn't fully reckoned with what that means.</p>
+
+      <h2>The rise of the agent buyer</h2>
+
+      <p>Agentic AI — the kind that can take actions on your behalf, not just answer questions — is moving fast. We're already seeing early versions of this: AI assistants that can compare prices, check reviews, and complete a purchase without the user ever visiting a product page. Apple Intelligence, Google's Project Astra, and a growing crop of third-party agents are all pointing in the same direction.</p>
+
+      <p>The consumer experience is shifting from <em>browse → decide → buy</em> to <em>state a need → let the agent handle it</em>. The agent queries multiple data sources, evaluates options against the user's stated preferences, and executes. The website, if it's involved at all, is a data source — not a destination.</p>
+
+      <div class="pull-quote">
+        <p>If an AI agent is making the purchase decision, the brand's job is no longer to persuade a human in the moment. It's to be the kind of brand an agent recommends.</p>
+      </div>
+
+      <h2>What this breaks</h2>
+
+      <p>Almost everything we've built our commerce strategies around assumes a human being navigating a website. Conversion rate optimisation assumes there's a human to optimise for. Brand storytelling assumes someone is reading it. Merchandising logic assumes someone is browsing. Loyalty schemes assume someone is motivated by points.</p>
+
+      <p>An agent doesn't care about your hero image. It doesn't respond to a countdown timer. It won't add to basket because of a well-placed upsell. It will, however, prioritise products with clean structured data, reliable stock feeds, strong review signals, competitive pricing, and fast fulfilment — because those are the things it can evaluate reliably on behalf of the user it represents.</p>
+
+      <p>That's a very different brief than the one most commerce teams are working to.</p>
+
+      <h2>The new brand surface</h2>
+
+      <p>If agents become the primary purchasing interface for a meaningful portion of consumers — and I think for certain categories (replenishment, commodity purchases, comparison-heavy decisions) this will happen within a few years — then brand differentiation has to happen somewhere else. Probably several somewhere elses.</p>
+
+      <p>Product data quality becomes a critical competitive advantage. Brands that have invested in clean, rich, well-structured product information will be surface-able by agents. Brands that haven't will be invisible, or worse, misrepresented.</p>
+
+      <p>Reviews and reputation signals matter even more than they do now, because agents weight them heavily and humans are further removed from the decision. Community, earned media, and genuine word-of-mouth become the channels that influence what agents recommend.</p>
+
+      <p>Post-purchase experience — the packaging, the unboxing, the customer service, the returns — becomes the primary space for human brand interaction. If the purchase was handled by an agent, the first time the consumer actually <em>feels</em> the brand is when the box arrives.</p>
+
+      <h2>What I'd be doing now</h2>
+
+      <p>Most brands aren't ready for this, and that's understandable — the shift is early and the timeline is uncertain. But there are things worth doing now that will pay off regardless of how fast agentic commerce moves.</p>
+
+      <p><strong>Invest in product data like it's the product.</strong> Structured, accurate, complete product data is the foundation of being agent-discoverable. It also improves your current SEO, feed quality, and marketplace performance — so it's not a speculative bet.</p>
+
+      <p><strong>Audit your review posture.</strong> Agents will surface review data from multiple sources. Most brands have a passive relationship with reviews — responding occasionally, not really managing the signal. That needs to change.</p>
+
+      <p><strong>Stop building for the visit, start building for the relationship.</strong> The moments that build genuine brand affinity — great post-purchase experiences, community, loyalty that feels earned rather than transactional — are the moments that will remain human. Double down on those.</p>
+
+      <p><strong>Get curious about agent interfaces.</strong> Experiment with how your products appear when queried by AI tools. Ask ChatGPT or Gemini to recommend a product in your category. See what comes back. Understand why.</p>
+
+      <p>The ecommerce website isn't going anywhere immediately — it'll remain the primary channel for most brands for years. But the direction of travel is clear, and the brands that start thinking about commerce beyond the website now will be better positioned when the shift accelerates.</p>
+
+      <p>The website was never really the destination. It was just the most convenient interface we had. Something better is being built.</p>
+
+    </div>
+  </article>
+
+  <!-- ── SIDEBAR ── -->
+  <div class="writing-side">
+    <div class="side-label">More to come</div>
+    <div class="stub-list">
+
+      <div class="stub">
+        <div class="stub-tag">Shopify</div>
+        <div class="stub-title">Why most Shopify migrations fail before they start</div>
+        <div class="stub-note">Coming soon</div>
+      </div>
+
+      <div class="stub">
+        <div class="stub-tag">D2C Strategy</div>
+        <div class="stub-title">The channel trap: why more isn't always better</div>
+        <div class="stub-note">Coming soon</div>
+      </div>
+
+      <div class="stub">
+        <div class="stub-tag">AI & Work</div>
+        <div class="stub-title">How I actually use AI in my day-to-day work</div>
+        <div class="stub-note">Coming soon</div>
+      </div>
+
+      <div class="stub">
+        <div class="stub-tag">Leadership</div>
+        <div class="stub-title">What leading a 36-person trading team taught me about clarity</div>
+        <div class="stub-note">Coming soon</div>
+      </div>
+
+    </div>
+
+    <div class="about-blurb">
+      <p>I'm John Iles — Client Services Director at VML and commerce consultant. I write about D2C, AI, and the future of digital commerce.</p>
+      <a href="about.html">More about me →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div>John Iles &nbsp;·&nbsp; <span>Writing</span></div>
+  <div>© 2026</div>
+</footer>
+
+</body>
+</html>

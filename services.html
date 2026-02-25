@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — John Iles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0e0e;
+    --paper: #f5f2ec;
+    --accent: #c8553d;
+    --muted: #7a7060;
+    --rule: #d4cfc6;
+    --card: #ede9e1;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.5;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    padding: 48px 60px 40px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .site-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .site-name em { font-style: italic; color: var(--accent); }
+
+  .header-links { display: flex; gap: 32px; align-items: center; }
+  .header-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .header-links a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .header-links a.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 60px;
+    display: flex;
+    backdrop-filter: blur(8px);
+  }
+  nav a {
+    display: block;
+    padding: 16px 20px 14px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  nav a:hover, nav a.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+  /* ─── HERO ─── */
+  .page-hero {
+    padding: 80px 60px 60px;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 60px;
+    align-items: end;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero::after {
+    content: 'Work';
+    position: absolute;
+    right: -10px;
+    bottom: -30px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 180px;
+    font-weight: 300;
+    color: var(--card);
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: -6px;
+  }
+
+  .page-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.05s forwards;
+  }
+
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 5.5vw, 76px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .page-title em { font-style: italic; color: var(--accent); }
+
+  .hero-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--muted);
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+    align-self: end;
+  }
+
+  /* ─── SERVICES GRID ─── */
+  .services-section {
+    padding: 72px 60px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+
+  .service-card {
+    background: var(--paper);
+    padding: 44px 40px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .service-card:nth-child(1) { animation-delay: 0.05s; }
+  .service-card:nth-child(2) { animation-delay: 0.1s; }
+  .service-card:nth-child(3) { animation-delay: 0.15s; }
+  .service-card:nth-child(4) { animation-delay: 0.2s; }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--rule);
+    transition: background 0.3s;
+  }
+
+  .service-card:hover::before { background: var(--accent); }
+
+  .service-number {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .service-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  .service-desc {
+    font-size: 12px;
+    color: #3a3630;
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .service-deliverables {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .deliverable {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .deliverable::before {
+    content: '—';
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* ─── HOW IT WORKS ─── */
+  .process-section {
+    padding: 72px 60px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 48px;
+    border: 1px solid var(--rule);
+  }
+
+  .process-step {
+    padding: 36px 32px;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .process-step:last-child { border-right: none; }
+
+  .step-num {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .step-desc {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ─── CLIENTS / CONTEXT ─── */
+  .context-section {
+    padding: 72px 60px;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .context-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+  }
+  .context-heading em { font-style: italic; color: var(--accent); }
+
+  .context-body {
+    font-size: 12.5px;
+    color: #3a3630;
+    line-height: 1.85;
+  }
+  .context-body p { margin-bottom: 16px; }
+
+  .brand-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .brand-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .brand-item:last-child { border-bottom: none; }
+
+  .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  .brand-type {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  /* ─── CTA ─── */
+  .cta-section {
+    padding: 80px 60px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .cta-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -1px;
+  }
+  .cta-heading em { font-style: italic; color: var(--accent); }
+
+  .cta-actions { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+
+  .cta-link-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 16px 28px;
+    transition: background 0.2s, transform 0.2s;
+    white-space: nowrap;
+  }
+  .cta-link-primary:hover { background: #a84030; transform: translateY(-1px); }
+
+  .cta-link-secondary {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .cta-link-secondary:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 32px 60px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  footer span { color: var(--accent); }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 900px) {
+    header { padding: 32px; flex-direction: column; align-items: flex-start; gap: 20px; }
+    nav { padding: 0 32px; overflow-x: auto; }
+    .page-hero { padding: 48px 32px 40px; grid-template-columns: 1fr; }
+    .page-hero::after { display: none; }
+    .services-section, .process-section, .context-section, .cta-section { padding: 48px 32px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .context-section { grid-template-columns: 1fr; gap: 40px; }
+    .cta-section { grid-template-columns: 1fr; gap: 32px; }
+    .cta-actions { align-items: flex-start; }
+    footer { padding: 24px 32px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="site-name" href="index.html">John <em>Iles</em></a>
+  <div class="header-links">
+    <a href="about.html">About</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="thinking.html">Writing</a>
+    <a href="mailto:john@example.com">Get in touch</a>
+  </div>
+</header>
+
+<nav>
+  <a href="index.html">CV</a>
+  <a href="about.html">About</a>
+  <a href="services.html" class="active">Services</a>
+  <a href="thinking.html">Writing</a>
+</nav>
+
+<div class="page-hero">
+  <div>
+    <p class="page-eyebrow">Consulting & Freelance</p>
+    <h1 class="page-title">Practical expertise.<br><em>Real outcomes.</em></h1>
+  </div>
+  <p class="hero-intro">I work with brands and agencies on commerce strategy, digital transformation, and AI-driven efficiency. I take on a small number of engagements at a time — which means you get my full attention.</p>
+</div>
+
+<div class="services-section">
+  <div class="section-label">What I offer</div>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="service-number">01</div>
+      <div class="service-title">Commerce Strategy & Discovery</div>
+      <div class="service-desc">Whether you're evaluating a replatform, defining a D2C proposition, or rethinking your channel mix — I help you get to a clear, evidenced point of view fast. I've developed discovery toolkits and sizing frameworks used by some of the largest commerce agencies in the world.</div>
+      <div class="service-deliverables">
+        <div class="deliverable">Platform evaluation & recommendation</div>
+        <div class="deliverable">D2C channel strategy & roadmap</div>
+        <div class="deliverable">Opportunity sizing & business case</div>
+        <div class="deliverable">Balanced channel scorecard</div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-number">02</div>
+      <div class="service-title">Shopify Replatform Delivery</div>
+      <div class="service-desc">From scoping and stakeholder alignment through to launch, I manage end-to-end replatform programmes on Shopify and Shopify Plus. I've successfully delivered these for multi-brand, multi-territory businesses — managing the complexity that comes with scale.</div>
+      <div class="service-deliverables">
+        <div class="deliverable">Programme scoping & commercial modelling</div>
+        <div class="deliverable">Senior stakeholder management</div>
+        <div class="deliverable">Agency & engineering team coordination</div>
+        <div class="deliverable">Launch & post-launch optimisation</div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-number">03</div>
+      <div class="service-title">AI & Automation Consulting</div>
+      <div class="service-desc">I help commerce teams understand where AI can actually move the needle — reducing cost-to-serve, unlocking personalisation at scale, and automating the repetitive work that slows teams down. I don't sell tools; I help you think clearly about where to invest.</div>
+      <div class="service-deliverables">
+        <div class="deliverable">AI opportunity assessment</div>
+        <div class="deliverable">Conversational commerce strategy</div>
+        <div class="deliverable">Agent & automation implementation</div>
+        <div class="deliverable">Agentic commerce readiness review</div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-number">04</div>
+      <div class="service-title">Interim Product & Account Leadership</div>
+      <div class="service-desc">Sometimes you need experienced leadership in the room quickly — for a programme at risk, a client relationship that needs steadying, or a team that needs direction. I step in as a senior, commercially-minded presence and get things moving.</div>
+      <div class="service-deliverables">
+        <div class="deliverable">Interim Product Owner / Programme Lead</div>
+        <div class="deliverable">At-risk project recovery</div>
+        <div class="deliverable">Client relationship management</div>
+        <div class="deliverable">Team mentoring & ways of working</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="process-section">
+  <div class="section-label">How I work</div>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-num">Step 01</div>
+      <div class="step-title">Intro call</div>
+      <div class="step-desc">A 30-minute conversation to understand your situation, what you're trying to achieve, and whether I'm the right fit.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">Step 02</div>
+      <div class="step-title">Proposal</div>
+      <div class="step-desc">A clear, specific proposal — scope, timeline, and cost. No padding, no vagueness about what you'll actually get.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">Step 03</div>
+      <div class="step-title">Engagement</div>
+      <div class="step-desc">I work closely with your team throughout. You'll always know where things stand and what's coming next.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">Step 04</div>
+      <div class="step-title">Outcome</div>
+      <div class="step-desc">Tangible deliverables with real commercial impact — not a deck that sits in a folder. Follow-on support available.</div>
+    </div>
+  </div>
+</div>
+
+<div class="context-section">
+  <div>
+    <h2 class="context-heading">Who I've<br>worked <em>with</em></h2>
+    <div class="context-body">
+      <p>I've worked across a wide range of sectors and business models — from luxury beauty to spirits, FMCG to footwear. What they had in common was a genuine ambition to do something better in commerce, and a need for someone who could navigate the complexity between strategy and delivery.</p>
+      <p>My background spans the brand side (L'Oréal), platform side (THG Ingenuity) and agency side (VML), which means I understand the pressures and incentives on all sides of the table.</p>
+    </div>
+  </div>
+  <div class="brand-list">
+    <div class="brand-item">
+      <span class="brand-name">Dr Martens</span>
+      <span class="brand-type">Footwear / D2C</span>
+    </div>
+    <div class="brand-item">
+      <span class="brand-name">Kiehl's / L'Oréal</span>
+      <span class="brand-type">Luxury Beauty / D2C</span>
+    </div>
+    <div class="brand-item">
+      <span class="brand-name">Mark Anthony Brands</span>
+      <span class="brand-type">Spirits / D2C</span>
+    </div>
+    <div class="brand-item">
+      <span class="brand-name">Beam Suntory</span>
+      <span class="brand-type">Spirits / Commerce</span>
+    </div>
+    <div class="brand-item">
+      <span class="brand-name">Britvic</span>
+      <span class="brand-type">FMCG / Omnichannel</span>
+    </div>
+    <div class="brand-item">
+      <span class="brand-name">THG Ingenuity clients</span>
+      <span class="brand-type">CPG Beauty / Multi-territory</span>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2 class="cta-heading">Got a project in mind?<br>Let's <em>talk</em>.</h2>
+  <div class="cta-actions">
+    <a class="cta-link-primary" href="mailto:john@example.com">Send me a message →</a>
+    <a class="cta-link-secondary" href="about.html">Learn more about me</a>
+  </div>
+</div>
+
+<footer>
+  <div>John Iles &nbsp;·&nbsp; <span>Commerce Consultant</span></div>
+  <div>© 2026 &nbsp;·&nbsp; London, UK</div>
+</footer>
+
+</body>
+</html>

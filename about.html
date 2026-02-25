@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — John Iles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0e0e;
+    --paper: #f5f2ec;
+    --accent: #c8553d;
+    --muted: #7a7060;
+    --rule: #d4cfc6;
+    --card: #ede9e1;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.5;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    position: relative;
+    padding: 48px 60px 40px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .site-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .site-name em { font-style: italic; color: var(--accent); }
+
+  .header-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .header-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .header-links a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .header-links a.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 60px;
+    display: flex;
+    backdrop-filter: blur(8px);
+  }
+
+  nav a {
+    display: block;
+    padding: 16px 20px 14px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  nav a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+  nav a.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+  /* ─── PAGE HERO ─── */
+  .page-hero {
+    padding: 80px 60px 60px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero::after {
+    content: 'About';
+    position: absolute;
+    right: -10px;
+    bottom: -30px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 180px;
+    font-weight: 300;
+    color: var(--card);
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: -8px;
+  }
+
+  .page-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.05s forwards;
+  }
+
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  .page-title em { font-style: italic; color: var(--accent); }
+
+  /* ─── CONTENT ─── */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    min-height: 60vh;
+  }
+
+  .content-main {
+    padding: 64px 60px;
+    border-right: 1px solid var(--rule);
+  }
+
+  .content-side {
+    padding: 64px 40px;
+  }
+
+  /* ─── PROSE ─── */
+  .prose {
+    max-width: 600px;
+  }
+
+  .prose p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--ink);
+    margin-bottom: 28px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .prose p:nth-child(1) { animation-delay: 0.1s; }
+  .prose p:nth-child(2) { animation-delay: 0.2s; }
+  .prose p:nth-child(3) { animation-delay: 0.3s; }
+  .prose p:nth-child(4) { animation-delay: 0.4s; }
+  .prose p:nth-child(5) { animation-delay: 0.5s; }
+
+  .prose p:last-child { margin-bottom: 0; }
+
+  .prose em { font-style: italic; color: var(--accent); }
+
+  /* ─── ASIDE FACTS ─── */
+  .aside-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+
+  .fact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .fact {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .fact:last-child { border-bottom: none; }
+
+  .fact-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .fact-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  /* ─── CTA ─── */
+  .cta-strip {
+    padding: 48px 60px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .cta-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--muted);
+    flex: 1;
+  }
+
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    transition: background 0.2s, transform 0.2s;
+    white-space: nowrap;
+  }
+  .cta-link:hover { background: #a84030; transform: translateY(-1px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 32px 60px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  footer span { color: var(--accent); }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 900px) {
+    header { padding: 32px; flex-direction: column; align-items: flex-start; gap: 20px; }
+    nav { padding: 0 32px; overflow-x: auto; }
+    .page-hero { padding: 48px 32px 40px; }
+    .page-hero::after { display: none; }
+    .content-grid { grid-template-columns: 1fr; }
+    .content-main { padding: 40px 32px; border-right: none; }
+    .content-side { padding: 0 32px 40px; }
+    .cta-strip { padding: 40px 32px; flex-direction: column; align-items: flex-start; }
+    footer { padding: 24px 32px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="site-name" href="index.html">John <em>Iles</em></a>
+  <div class="header-links">
+    <a href="about.html" class="active">About</a>
+    <a href="services.html">Services</a>
+    <a href="thinking.html">Writing</a>
+    <a href="mailto:john@example.com">Get in touch</a>
+  </div>
+</header>
+
+<nav>
+  <a href="index.html">CV</a>
+  <a href="about.html" class="active">About</a>
+  <a href="services.html">Services</a>
+  <a href="thinking.html">Writing</a>
+</nav>
+
+<div class="page-hero">
+  <p class="page-eyebrow">The person behind the CV</p>
+  <h1 class="page-title">Commerce strategist.<br><em>Human first.</em></h1>
+</div>
+
+<div class="content-grid">
+  <div class="content-main">
+    <div class="prose">
+      <p>I've spent the better part of a decade helping brands figure out how to sell things on the internet — and more importantly, why they should care. That sounds simple, but it rarely is. The interesting work is almost always about people and organisations, not platforms.</p>
+
+      <p>I'm based in London with my wife and daughter, who is four years old and has <em>strong opinions</em> about everything. She's also the reason I know rather more about coffee than any adult should — a double espresso at 6am has become a non-negotiable part of my morning ritual.</p>
+
+      <p>What I genuinely love about my work is the combination of complex problems and interesting people. Every client engagement starts with a puzzle: why isn't this channel performing, how do we move faster, what does this brand actually need to win? Getting to the real answer — not the obvious one — is what gets me out of bed. Then there's the human side: building trust with stakeholders, aligning teams, making the case for change in organisations that don't always find change easy.</p>
+
+      <p>Right now I'm thinking a lot about AI — specifically what it means for commerce as agents start to make purchasing decisions on behalf of consumers. The interface between brands and buyers is shifting in ways that most teams haven't fully reckoned with yet. That feels like an important problem to be close to.</p>
+
+      <p>If you're working on something interesting in this space — a replatform, a D2C strategy, an AI initiative — <em>I'd love to hear about it.</em></p>
+    </div>
+  </div>
+
+  <div class="content-side">
+    <div class="aside-label">At a glance</div>
+    <div class="fact-list">
+      <div class="fact">
+        <div class="fact-label">Location</div>
+        <div class="fact-value">London, UK</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Currently</div>
+        <div class="fact-value">Client Services Director at VML</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Specialisms</div>
+        <div class="fact-value">D2C commerce, Shopify, AI & automation, replatforming</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Experience</div>
+        <div class="fact-value">7+ years across agency, brand & platform sides</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Education</div>
+        <div class="fact-value">BA Business Management, 1st Class Honours — Nottingham Business School</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Outside work</div>
+        <div class="fact-value">Coffee enthusiast, navigating parenthood, asking hard questions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-strip">
+  <p class="cta-text">Interested in working together? I take on a limited number of consulting engagements.</p>
+  <a class="cta-link" href="services.html">View services →</a>
+</div>
+
+<footer>
+  <div>John Iles &nbsp;·&nbsp; <span>London</span></div>
+  <div>© 2026</div>
+</footer>
+
+</body>
+</html>
